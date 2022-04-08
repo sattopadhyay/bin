@@ -1,0 +1,2 @@
+#!/bin/sh
+GTK_THEME=Adwaita /usr/lib/libreoffice/program/soffice --impress "$@"

@@ -1,0 +1,7 @@
+#!/bin/sh
+tmux new-session -d -s "music" -n "music" -c "$HOME/music" lf $HOME/music
+tmux new-session -d -s "python" -c "$HOME/docs/python" lf $HOME/docs/python
+tmux new-session -d -s "bin" -n "bin" -c "$HOME/.local/bin" lf $HOME/.local/bin
+tmux new-session -d -s "git" -n "git" -c "$HOME/git"
+tmux new-session -d -s "weechat" -n "weechat" weechat
+tmux new-session -d -s "stream" -n "stream" -c $HOME/.local/bin/stream ytfzf -ms

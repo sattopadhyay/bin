@@ -1,0 +1,3 @@
+#!/bin/sh
+export GTK_THEME="Adwaita"
+/usr/lib/libreoffice/program/soffice --writer "$@"

@@ -1,0 +1,3 @@
+#!/bin/sh
+# $HOME/.local/bin/bar-date
+echo "$(date +"%a, %d-%m-%Y 🕑 %H:%M")"

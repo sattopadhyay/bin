@@ -1,0 +1,9 @@
+#!/bin/sh
+# $HOME/.local/bin/diskunmount
+umount $HOME/mtp && exit
+unmountable=$(lsblk -rp | grep --color /run/media/$USER | awk '{print $1}')
+#pgrep Xorg && chosen=$(echo "$unmountable" | rofi -dmenu -p "Device to unmount: ") || chosen=$(echo "$unmountable" | wofi --show=dmenu -p "Device to unmount: ")
+chosen=$(echo "$unmountable" |  bemenu -bil 20 --fn pango:JetBrains Mono NL Bold 15 -W 0.4 --prompt="Unmount: ")
+[ -z "$chosen" ] && exit
+udisksctl unmount -b $chosen
+rm ~/usb

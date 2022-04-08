@@ -1,0 +1,4 @@
+#!/bin/sh
+notify-send -u critical "System will be shut down in 60 seconds"
+sleep 60
+poweroff

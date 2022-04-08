@@ -1,0 +1,8 @@
+#!/bin/sh
+# $HOME/.local/bin/emojimenu
+set +e
+if [ -z "$WAYLAND_DISPLAY" ] ; then
+	tail -n +3 $HOME/.config/emojimenu/emojis | rofi -dmenu -i -l 10 | awk '{printf $1}' | xclip -selection c
+else
+	tail -n +3 $HOME/.config/emojimenu/emojis | bemenu -bil 20 --fn pango:JetBrains Mono NL Bold 12 -W 0.4 --prompt="Emoji:" | awk '{printf $1}' | wl-copy
+fi

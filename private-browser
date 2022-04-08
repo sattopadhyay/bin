@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$BROWSER" = "chromium" ] ; then
+	chromium --incognito
+elif [ "$BROWSER" = "firefox" ] ; then
+	firefox --private-window
+fi

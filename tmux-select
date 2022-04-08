@@ -1,0 +1,3 @@
+#!/bin/sh
+session="$(tmux ls | cut -d ":" -f 1 | bemenu -bil 20 --fn pango:JetBrains Mono NL Bold -W 0.4 --prompt='')"
+[ -z "$session" ] || footclient tmux attach -t $session

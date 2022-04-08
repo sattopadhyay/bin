@@ -1,0 +1,12 @@
+#!/bin/sh
+# $HOME/.local/bin/diskmount
+aft-mtp-mount $HOME/mtp && exit
+#mountable=$(lsblk -rp | grep "part $" | awk '{print $1," - ",$4}')
+#pgrep Xorg && selected=$(echo "$mountable" | rofi -dmenu -p "Drive to mount: " | awk '{printf $1}') || selected=$(echo "$mountable" | wofi --show=dmenu -p "Drive to mount: " | awk '{printf $1}')
+
+mountable=$(lsblk -nlpo NAME,RM -e 11 | awk '$2==1 {print $1}')
+selected=$(echo "$mountable" |  bemenu -bil 20 --fn pango:JetBrains Mono NL Bold 15 -W 0.4 --prompt="Mount: " | awk '{printf $1}' )
+[ -z "$selected" ] && exit
+udisksctl mount -b $selected
+ln -s /run/media/$USER ~/usb
+footclient ranger ~/usb

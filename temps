@@ -1,0 +1,3 @@
+#!/bin/sh
+#ansiweather | tail -c 33
+output="$(ansiweather)" && echo $output | sed s/"Humidity:"/🌊/g | sed s/"Weather in Kolkata"/🌡️/| sed s/'Wind'/🌬️/

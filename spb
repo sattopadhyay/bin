@@ -1,0 +1,3 @@
+#!/bin/sh
+mime=$(copyq eval 'clipboard("?")')
+[[ $mime == *"image"* ]] && wl-paste | pb
