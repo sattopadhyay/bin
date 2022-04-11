@@ -1,5 +1,5 @@
 #!/bin/sh
 # $HOME/.local/bin/memory-cpu
 mem=$(free -h | sed -n 2p | awk {'print $3'})
-cpu=$(top -bn 1 | grep -im1 'Cpu' | awk '{print $2}')
+cpu=$(top -bn2 | grep -im1 'Cpu' | awk '{print $2}')
 echo " 💻 $mem  $cpu%"
