@@ -1,0 +1,16 @@
+#!/bin/sh
+# The primary use of this script is to open remote urls in the appropriate application 
+#inspired by discord annoyance of opening images in firefox. Note that your local path
+#needs to be before the universal path where xdg-open is stored for this to properly work.
+#eg: PATH=abcd:$PATH where abcd is the directory of your local path.
+mime=$(curl -sLI "$@" | grep content-type | awk '{printf $2}')
+if [[ "$mime" == *"audio"* ]] || [[ "$ext" == "m4a" ]] || [[ "$ext" == "m3u" ]] ; then
+	mpv --no-video "$@"
+elif [[ "$mime" == *"image"* ]] ; then
+	feh "$@"
+elif [[ "$mime" == "text"* ]] ; then
+	nvim -O "$@"
+else
+	mimeopen "$@"
+fi
+
