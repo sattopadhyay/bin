@@ -1,0 +1,8 @@
+#!/bin/sh
+# Note this requires you to have the unofficial API running on port 5000 as described
+# on https://github.com/cyberboysumanjay/JioSaavnAPI. This script will not work without it.
+[[ -n "$@" ]] && query="$@"
+[[ -z "$@" ]] && read -p "Enter search query: " query
+q=$(echo $query | sed s/' '/'%20'/g)
+url=$(curl -s http://localhost:5000/song/?query="$q" | jq -r '.[] | "\(.song) -- \(.singers) -- \(.media_url)"' | bemenu -W 1 | rev | cut -d " " -f 1 | rev)
+mpv --no-video "$url"
