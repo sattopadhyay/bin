@@ -5,12 +5,16 @@
 #eg: PATH=abcd:$PATH where abcd is the directory of your local path.
 mime=$(curl -sLI "$@" | grep content-type | awk '{printf $2}')
 if [[ "$mime" == *"audio"* ]] ; then
-	mpv --no-video "$@"
-elif [[ "$mime" == *"image"* ]] ; then
+	footclient mpv --no-video "$@"
+elif [[ "$mime" == *"video/"* ]] ; then
+	mpv "$@"
+elif [[ "$mime" == *"image/"* ]] ; then
 	feh "$@"
-elif [[ "$mime" == "text"* && "$mime" != *"html"* ]] ; then
+elif [[ "$mime" == "text/"* && "$mime" != *"html"* ]] ; then
 	nvim "$@" || footclient nvim "$@"
+elif [[ "$(curl -sSfw '%{redirect_url}' "$@")" == *"youtube.com"* ]] ; then
+	mpv "$@"
 else
-	/usr/bin/xdg-open "$@"
+	$BROWSER "$@"
 fi
 
