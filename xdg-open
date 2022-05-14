@@ -3,18 +3,20 @@
 #inspired by discord annoyance of opening images in firefox. Note that your local path
 #needs to be before the universal path where xdg-open is stored for this to properly work.
 #eg: PATH=abcd:$PATH where abcd is the directory of your local path.
-mime=$(curl -sLI "$@" | grep content-type | awk '{printf $2}')
+mime=$(curl -sLI "$1" | grep content-type | awk '{printf $2}')
 if [[ "$mime" == *"audio"* ]] ; then
-	footclient mpv --no-video "$@"
+	footclient mpv --no-video "$1"
 elif [[ "$mime" == *"video/"* ]] ; then
-	mpv "$@"
+	mpv "$1"
 elif [[ "$mime" == *"image/"* ]] ; then
-	feh "$@"
+	feh "$1"
 elif [[ "$mime" == "text/"* && "$mime" != *"html"* ]] ; then
-	nvim "$@" || footclient nvim "$@"
-elif [[ "$(curl -sSfw '%{redirect_url}' "$@")" == *"youtube.com"* ]] ; then
-	mpv "$@"
+	nvim "$1" || footclient nvim "$@"
+elif [[ "$( curl -gSsL -o /dev/null -w '%{url_effective}' -- "$1")" == *"youtube.com"* ]] ; then
+	mpv "$1"
 else
-	$BROWSER "$@"
+	$BROWSER "$1"
 fi
+#alt youtube script to open multiple yt links as a playlist, needs work to integrate it in here- 
+#	 curl -gSsL -o /dev/null -w '%{url_effective}\n' -- "$@" | grep '^https\{0,1\}://youtube.com/watch' | mpv --playlist=-
 
