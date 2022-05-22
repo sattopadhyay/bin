@@ -9,7 +9,7 @@ if [[ "$mime" == *"audio"* ]] ; then
 elif [[ "$mime" == *"video/"* ]] ; then
 	mpv "$1"
 elif [[ "$mime" == *"image/"* ]] ; then
-	wget -O /tmp/img -c "$1"
+	wget -O /tmp/img "$1"
 	imv /tmp/img
 elif [[ "$mime" == "text/"* && "$mime" != *"html"* ]] ; then
 	nvim "$1" || footclient nvim "$@"
