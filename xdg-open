@@ -9,7 +9,8 @@ if [[ "$mime" == *"audio"* ]] ; then
 elif [[ "$mime" == *"video/"* ]] ; then
 	mpv "$1"
 elif [[ "$mime" == *"image/"* ]] ; then
-	feh "$1"
+	wget -O /tmp/img -c "$1"
+	imv /tmp/img
 elif [[ "$mime" == "text/"* && "$mime" != *"html"* ]] ; then
 	nvim "$1" || footclient nvim "$@"
 elif [[ "$( curl -gSsL -o /dev/null -w '%{url_effective}' -- "$1")" == *"youtube.com"* ]] ; then
