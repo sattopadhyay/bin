@@ -9,14 +9,14 @@ if [[ "$mime" == *"audio"* ]] ; then
 elif [[ "$mime" == *"video/"* ]] ; then
 	mpv "$1"
 elif [[ "$mime" == *"image/"* ]] ; then
-	wget -O /tmp/img "$1"
+	nohup wget -O /tmp/img "$1" >/dev/null 2>&1 
 	imv /tmp/img
 elif [[ "$mime" == "text/"* && "$mime" != *"html"* ]] ; then
 	nvim "$1" || footclient nvim "$@"
 elif [[ "$( curl -gSsL -o /dev/null -w '%{url_effective}' -- "$1")" == *"youtube.com"* ]] ; then
 	mpv "$1"
 else
-	$BROWSER "$1"
+	/usr/bin/xdg-open "$1"
 fi
 #alt youtube script to open multiple yt links as a playlist, needs work to integrate it in here- 
 #	 curl -gSsL -o /dev/null -w '%{url_effective}\n' -- "$@" | grep '^https\{0,1\}://youtube.com/watch' | mpv --playlist=-
