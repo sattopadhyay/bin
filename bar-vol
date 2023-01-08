@@ -1,0 +1,12 @@
+#!/bin/sh
+stat="$(amixer sget Master | awk 'END{print $6}' | tr -d [])"
+current="$(amixer sget Master | awk 'END{print substr($5, 1, length($5) -2)}' | tr -d [])"
+if [ "$current" -eq 0 ] || [ "$stat" == "off" ]; then
+	echo " "
+elif [ "$current" -lt 35 ] ; then
+	echo " $current%"
+elif [ "$current" -lt 70 ] ; then
+	echo " $current%"
+elif [ "$current" -gt 70 ] ; then
+	echo "   $current%"
+fi
