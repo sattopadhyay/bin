@@ -1,12 +1,29 @@
 #!/bin/sh
-stat="$(amixer sget Master | awk 'END{print $6}' | tr -d [])"
-current="$(amixer sget Master | awk 'END{print substr($5, 1, length($5) -2)}' | tr -d [])"
-if [ "$current" -eq 0 ] || [ "$stat" == "off" ]; then
-	echo " "
-elif [ "$current" -lt 35 ] ; then
-	echo " $current%"
-elif [ "$current" -lt 70 ] ; then
-	echo " $current%"
-elif [ "$current" -gt 70 ] ; then
-	echo "   $current%"
+stat() {
+	statout="$(amixer sget "$1" | awk 'END{print $6}' | tr -d [])"
+	echo -n "$statout"
+}
+current() {
+	currentout="$(amixer sget "$1" | awk 'END{print substr($5, 1, length($5) -2)}' | tr -d [])"
+	echo -n "$currentout"
+}
+#stat="$(amixer sget Master | awk 'END{print $6}' | tr -d [])"
+#current="$(amixer sget Master | awk 'END{print substr($5, 1, length($5) -2)}' | tr -d [])"
+speakerstat="$(stat Master)"
+speakercurrent="$(current Master)"
+if [ "$speakercurrent" -eq 0 ] || [ "$speakerstat" == "off" ]; then
+	echo -n " "
+elif [ "$speakercurrent" -lt 35 ] ; then
+	echo -n " $speakercurrent%"
+elif [ "$speakercurrent" -lt 70 ] ; then
+	echo -n " $speakercurrent%"
+elif [ "$speakercurrent" -gt 69 ] ; then
+	echo -n "  $speakercurrent%"
+fi
+micstat="$(stat Capture)"
+miccurrent="$(current Capture)"
+if [ "$miccurrent" -eq 0 ] || [ "$micstat" == "off" ]; then
+	echo -n " "
+else
+	echo -n "  $miccurrent%"
 fi
