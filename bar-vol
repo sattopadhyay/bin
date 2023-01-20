@@ -1,29 +1,24 @@
-#!/bin/sh
-stat() {
-	statout="$(amixer sget "$1" | awk 'END{print $6}' | tr -d [])"
-	echo -n "$statout"
-}
-current() {
-	currentout="$(amixer sget "$1" | awk 'END{print substr($5, 1, length($5) -2)}' | tr -d [])"
-	echo -n "$currentout"
-}
-#stat="$(amixer sget Master | awk 'END{print $6}' | tr -d [])"
-#current="$(amixer sget Master | awk 'END{print substr($5, 1, length($5) -2)}' | tr -d [])"
-speakerstat="$(stat Master)"
-speakercurrent="$(current Master)"
-if [ "$speakercurrent" -eq 0 ] || [ "$speakerstat" == "off" ]; then
-	echo -n " "
-elif [ "$speakercurrent" -lt 35 ] ; then
-	echo -n " $speakercurrent%"
-elif [ "$speakercurrent" -lt 70 ] ; then
-	echo -n " $speakercurrent%"
-elif [ "$speakercurrent" -gt 69 ] ; then
-	echo -n "  $speakercurrent%"
-fi
-micstat="$(stat Capture)"
-miccurrent="$(current Capture)"
-if [ "$miccurrent" -eq 0 ] || [ "$micstat" == "off" ]; then
-	echo -n " "
-else
-	echo -n "  $miccurrent%"
-fi
+#!/usr/bin/python
+import subprocess
+def audio(device,col):
+    cmd=f"amixer sget {device} | awk 'END{{print ${col}}}' | tr -d []"
+    #out = subprocess.run(cmd,capture_output=True,shell=True)
+    out = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+    return out.stdout.readline().decode().strip()
+speaker_stat=audio("Master",6)
+speaker_vol=int(audio("Master",5).strip(' \t\n\r%'))
+mic_stat=audio("Capture",5)
+mic_vol=int(audio("Capture",4).strip(' \t\n\r%'))
+if speaker_vol<1 or speaker_stat == "off":
+    print(" ",end=" ")
+elif speaker_vol <35:
+    print(f" {speaker_vol}%",end=" ")
+elif speaker_vol < 70:
+    print(f" {speaker_vol}%",end=" ")
+else:
+    print(f"  {speaker_vol}%",end=" ")
+
+if mic_vol<1 or mic_stat == "off":
+    print("",end="")
+elif mic_vol>0:
+    print(f" {mic_vol}%",end="")
