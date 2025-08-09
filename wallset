@@ -1,10 +1,16 @@
-#!/bin/sh
-if [[ ! -z "$1" ]] && [[ "$(file -bi "$1")" == image/* ]] ; then
+#!/usr/bin/bash
+
+if [[ -z "$1" ]] ; then
+	imv $HOME/pics/wallpapers
+
+elif [[ "$(file -bi "$1")" == image/* ]] ; then
 	imgfile=$(realpath "$1")
 	ln -sf "$imgfile" ~/pics/wallpapers/wallpaper
 	magick ~/pics/wallpapers/wallpaper -scale 10% -blur 0x2.5 -resize 1000% ~/pics/wallpapers/lock.jpg
 	swaymsg 'output "*" background "~/pics/wallpapers/wallpaper" fill'
 	notify-send "Wallpaper changed successfully"
+
 else
 	echo "Enter valid image file"
+
 fi
